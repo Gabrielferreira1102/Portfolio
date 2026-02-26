@@ -1,0 +1,98 @@
+/* Configurações gerais */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg, #f0f8ff, #e6eff7);
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Cabeçalho */
+.header {
+    text-align: center;
+    padding: 20px;
+    background-color: #6a11cb;
+    color: white;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.header p {
+    margin: 5px 0 0;
+    font-size: 1.1rem;
+}
+
+/* Container dos quadrados */
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 colunas para a primeira linha */
+    grid-template-rows: auto auto;        /* Duas linhas automáticas */
+    gap: 20px;
+    padding: 20px;
+    max-width: 900px;
+    width: 100%;
+    margin: 20px auto;
+    justify-content: center;
+}
+
+/* Ajustar centralização da segunda linha */
+.container a:nth-child(n+5) {
+    grid-column: span 1; /* Apenas garante que os elementos fiquem centrados */
+}
+
+/* Quadrados */
+.square {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    background-color: white;
+    color: #6a11cb;
+    border-radius: 15px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    height: 150px;
+    font-weight: bold;
+}
+
+/* Efeitos nos quadrados */
+.square:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    background-color: #f1f7fd;
+    color: #907be6;
+}
+
+/* Rodapé */
+.footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #f8f9fa;
+    font-size: 0.9rem;
+    color: #888;
+    width: 100%;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+}
+/* Responsividade */
+@media (max-width: 768px) {
+    #alterarModal {
+        width: 90%; /* Ajuste para telas pequenas */
+        max-width: none; /* Remover o limite superior em telas pequenas */
+    }
+    .modal-content h2 {
+        font-size: 18px;
+    }
+}

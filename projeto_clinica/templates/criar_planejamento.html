@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Planejamento</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='criar_planejamento.css') }}">
+</head>
+<body>
+    <nav id="menu">
+        <ul>
+            <li><a href="{{ url_for('planejamento', id_cliente=id_cliente) }}">Voltar</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Criar Planejamento</h1>
+
+        <form method="POST" action="{{ url_for('criar_planejamento', id_cliente=id_cliente) }}">
+            <label for="area">Área:</label>
+            <input type="text" id="area" name="area" required>
+
+            <label for="momento_atual">Momento Atual:</label>
+            <input type="text" id="momento_atual" name="momento_atual" required>
+
+            <label for="objetivo">Objetivo:</label>
+            <input type="text" id="objetivo" name="objetivo" required>
+
+            <label for="estrategia">Estratégia:</label>
+            <input type="text" id="estrategia" name="estrategia" required>
+
+            <label for="data">Data:</label>
+            <input type="date" id="data" name="data" required>
+
+            <button type="submit">Salvar Planejamento</button>
+        </form>
+    </div>
+</body>
+</html>

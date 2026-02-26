@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='ver_paciente.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='relatorio.css') }}">
+</head>
+<body>
+    <nav id="menu" style="text-align:right;">
+        <ul>
+            <li>
+                <a href="/menu_adm" class="Menu">Voltar</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Relatorio mensal</h1>
+
+        <div class="stats">
+            <div class="card">
+                <h3>Total de consultas</h3>
+                <p>{{total_consultas}}</p>
+                <small></small>
+            </div>
+            <div class="card">
+                <h3>Consultas faltadas</h3>
+                <p>{{falso_consultas}}</p>
+                <small></small>
+            </div>
+            
+            <div class="card">
+                <h3>Data</h3>
+                <p>{{mes[0]}}</p>
+                <small></small>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h2>Tabelas</h2>
+            <img src="{{ url_for('grafico') }}" alt="User Growth Chart">
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Pacientes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='ver_paciente.css') }}">
+</head>
+<body>
+    <nav id="menu">
+        <ul>
+            {% if current_user.role == 'adm' or current_user.role == 'secretario'%}
+                <li><a href="/cadastrar_paciente">Cadastrar Paciente</a></li>
+            {% endif %}
+            <li><a href="/menu_adm">Menu</a></li>            
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Pacientes</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if pacientes %}
+        <table>
+            <thead>
+                <tr>
+                    {% if current_user.role == 'adm' or current_user.role == 'secretario'%}
+                        <th>CPF</th>
+                    {% endif %}
+                    <th>Nome</th>
+                    <th>Responsável</th>
+                    <th>Telefone</th>
+                    <th>Email</th>
+                    <th>Data de Nascimento</th>
+                    {% if current_user.role == 'adm' or current_user.role == 'secretario'%}
+                        <th>Ações</th>
+                    {% endif %}
+                    <th>rastreio</th>
+                    <th>planejamento</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for paciente in pacientes %}
+                <tr>
+                    {% if current_user.role == 'adm' or current_user.role == 'secretario'%}
+                    <td>{{ paciente[1] }}</td>
+                    {% endif %}
+                    <td>{{ paciente[2] }}</td>
+                    <td>{{ paciente[5] }}</td>
+                    <td>{{ paciente[6] }}</td>
+                    <td>{{ paciente[7] }}</td>
+                    <td>{{ paciente[8] }}</td>
+                    {% if current_user.role == 'adm' or current_user.role == 'secretario'%}
+                        <td>
+                            <button class="btn-alterar" 
+                                data-id="{{ paciente[0] }}"
+                                data-nome="{{ paciente[2] }}"
+                                data-responsavel="{{ paciente[5] }}"
+                                data-telefone="{{ paciente[6] }}"
+                                data-email="{{ paciente[7] }}"
+                                data-data-nasc="{{ paciente[8] }}">
+                                Alterar
+                            </button>
+                        </td>
+                    {% endif %}
+                    <td><a href="{{ url_for('rastreio', id_cliente=paciente[0]) }}" class="btn-rastreio">Ver Rastreamento</a></td>
+                    <td><a href="{{ url_for('planejamento', id_cliente=paciente[0]) }}" class="btn-planejamento">Ver planejamento</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>Nenhum paciente encontrado.</p>
+        {% endif %}
+    </div>
+
+    <div id="alterarModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Alterar Paciente</h2>
+            <form method="POST" action="/alterar_paciente">
+                <input type="hidden" id="modal-id" name="id">
+
+                <label for="modal-nome">Nome:</label>
+                <input type="text" id="modal-nome" name="nome" required>
+
+                <label for="modal-responsavel">Responsável:</label>
+                <input type="text" id="modal-responsavel" name="responsavel" required>
+
+                <label for="modal-telefone">Telefone:</label>
+                <input type="text" id="modal-telefone" name="telefone" required>
+
+                <label for="modal-email">Email:</label>
+                <input type="email" id="modal-email" name="email" required>
+
+                <label for="modal-data-nasc">Data de Nascimento:</label>
+                <input type="date" id="modal-data-nasc" name="data_nascimento" required>
+
+                <button type="submit">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("alterarModal");
+        const btnsAlterar = document.querySelectorAll(".btn-alterar");
+        const closeBtn = document.querySelector(".close");
+
+        btnsAlterar.forEach(btn => {
+            btn.addEventListener("click", function() {
+                modal.classList.add("show");
+                document.getElementById("modal-id").value = this.getAttribute("data-id");
+                document.getElementById("modal-nome").value = this.getAttribute("data-nome");
+                document.getElementById("modal-responsavel").value = this.getAttribute("data-responsavel");
+                document.getElementById("modal-telefone").value = this.getAttribute("data-telefone");
+                document.getElementById("modal-email").value = this.getAttribute("data-email");
+                document.getElementById("modal-data-nasc").value = this.getAttribute("data-data-nasc");
+            });
+        });
+
+        closeBtn.addEventListener("click", () => {
+            modal.classList.remove("show");
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Horários de {{ nome_cliente }}</title>
+    <link rel="stylesheet" href="static/rastreio.css">
+    <link rel="stylesheet" href="static/clinica.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
+</head>
+<body>
+    <nav id="menu" style="text-align:right;">
+        <ul>
+            <li>
+                <a href="/" class="a">Voltar</a>
+            </li>
+        </ul>
+    </nav>
+
+    <h1>Bem vindo {{ nome }}</h1>
+    <br>
+    <!-- Exibição dos horários do paciente -->
+    {% if horarios_paciente %}
+    <h1>Seus horarios</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Terapeuta</th>
+                <th>Dia da Semana</th>
+                <th>Horário</th>
+                <th>Data</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for horario in horarios_paciente %}
+            <tr>
+                <td>{{ horario[2] }}</td>
+                <td>{{ horario[3] }}</td>
+                <td>{{ horario[4] }}</td>
+                <td>{{ horario[5] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Nenhum horário encontrado para {{ nome_cliente }}.</p>
+    {% endif %}
+</body>
+</html>

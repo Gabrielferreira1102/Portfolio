@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horários</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='ver_paciente.css') }}">
+</head>
+<body>
+    <nav id="menu" style="text-align:right">
+        <ul>
+            {% if current_user.role == 'adm' or current_user.role == 'secretario'%}
+                <li><a href="/criar_horario" class="a">criar horarios</a></li>
+            {% endif %}
+            <li>
+                <a href="/menu_adm" class="a">Menu</a>
+            </li>            
+        </ul>
+    </nav>
+    <h1>Horários Marcados</h1>
+    
+    <!-- Formulário de Busca -->
+    <form method="GET" action="/ver_horarios">
+        <label for="search">Buscar Horários:</label>
+        <input 
+            type="text" 
+            id="search" 
+            name="search" 
+            placeholder="Digite o nome do cliente ou terapeuta"
+            value="{{ termo_busca }}">
+        <button type="submit">Buscar</button>
+    </form>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    <!-- Exibição dos Horários -->
+    {% if horarios %}
+    <table>
+        <thead>
+            <tr>
+                <th>Paciente</th>
+                {% if current_user.role == 'adm' or current_user.role == 'secretario'%}
+                    <th>Terapeuta</th>
+                {% endif %}
+                <th>Dia da Semana</th>
+                <th>Horário</th>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Sala</th>
+                <th>Presença</th>
+                {% if current_user.role == 'adm' or current_user.role == 'secretario'%}
+                    <th>Ações</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for horario in horarios %}
+            <tr>
+                <td>{{ horario[1] }}</td>
+                {% if current_user.role == 'adm' or current_user.role == 'secretario'%}
+                    <td>{{ horario[2] }}</td>
+                {% endif %}
+                <td>{{ horario[3] }}</td>
+                <td>{{ horario[4] }}</td>
+                <td>{{ horario[5] }}</td>
+                <td>{{ horario[6] }}</td>
+                <td>{{ horario[7] }}</td>
+                <td>{{ horario[8] }}</td>
+                {% if current_user.role == 'adm' or current_user.role == 'secretario'%}
+                    <td>
+                        <button class="btn-alterar" 
+                            data-id="{{ horario[0] }}"
+                            data-paciente="{{ horario[1] }}" 
+                            data-terapeuta="{{ horario[2] }}" 
+                            data-dia="{{ horario[3] }}" 
+                            data-horario="{{ horario[4] }}" 
+                            data-data="{{ horario[5] }}" 
+                            data-descricao="{{ horario[6] }}"
+                            data-sala="{{ horario[7] }}"
+                            data-presenca="{{ horario[8] }}">
+                            Alterar
+                        </button>
+                    </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Nenhum horário encontrado.</p>
+    {% endif %}
+
+    <!-- Modal -->
+    <div id="alterarModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Alterar Informações</h2>
+            <form method="POST" id="modal-form">
+                <input type="hidden" id="modal-id" name="id">
+                
+                <label for="modal-paciente">Paciente:</label>
+                <input type="text" id="modal-paciente" name="paciente" required>
+
+                <label for="modal-terapeuta">Terapeuta:</label>
+                <input type="text" id="modal-terapeuta" name="terapeuta" required>
+
+                <label for="modal-dia">Dia da Semana:</label>
+                <input type="text" id="modal-dia" name="dia_semana" required>
+
+                <label for="modal-horario">Horário:</label>
+                <input type="text" id="modal-horario" name="horario" required>
+
+                <label for="modal-data">Data:</label>
+                <input type="date" id="modal-data" name="data" required>
+
+                <label for="modal-descricao">Descrição:</label>
+                <input type="text" id="modal-descricao" name="descricao" required>
+
+                <label for="modal-sala">Sala:</label>
+                <input type="text" id="modal-sala" name="sala" required>
+
+                <label for="modal-presenca">Presença:</label>
+                <input type="checkbox" id="modal-presenca" name="presenca">
+                
+                <button type="submit">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Função para abrir o modal e preencher os campos
+        const modal = document.getElementById("alterarModal");
+        const btnsAlterar = document.querySelectorAll(".btn-alterar");
+        const closeBtn = document.querySelector(".close");
+        const formModal = document.getElementById("modal-form");
+
+        btnsAlterar.forEach(btn => {
+            btn.addEventListener("click", function() {
+                modal.classList.add("show");
+
+                const id = this.getAttribute("data-id");
+                document.getElementById("modal-id").value = id;
+                document.getElementById("modal-paciente").value = this.getAttribute("data-paciente");
+                document.getElementById("modal-terapeuta").value = this.getAttribute("data-terapeuta");
+                document.getElementById("modal-dia").value = this.getAttribute("data-dia");
+                document.getElementById("modal-horario").value = this.getAttribute("data-horario");
+                document.getElementById("modal-data").value = this.getAttribute("data-data");
+                document.getElementById("modal-descricao").value = this.getAttribute("data-descricao");
+                document.getElementById("modal-sala").value = this.getAttribute("data-sala");
+                
+                // Converter o valor da presença para booleano e marcar/desmarcar o checkbox
+                const presencaValue = this.getAttribute("data-presenca") === 'true';
+                document.getElementById("modal-presenca").checked = presencaValue;
+
+                // Atualiza a action do formulário para incluir o ID correto
+                formModal.action = `/alterar_horario`;
+            });
+        });
+
+        // Fechar o modal ao clicar no botão de fechar
+        closeBtn.addEventListener("click", () => {
+            modal.classList.remove("show");
+        });
+    </script>
+
+</body>
+</html>

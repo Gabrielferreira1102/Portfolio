@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horários</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='ver_paciente.css') }}">
+</head>
+<body>
+    <nav id="menu" style="text-align:right">
+        <ul>
+            {% if current_user.role == 'adm' or current_user.role == 'secretario'%}
+                <li><a href="/criar_horario" class="a">criar horarios</a></li>
+            {% endif %}
+            <li>
+                <a href="/menu_adm" class="a">Menu</a>
+            </li>            
+        </ul>
+    </nav>
+    <h1>Horários Marcados</h1>
+    
+    <!-- Formulário de Busca -->
+    <form method="GET" action="/ver_horarios_terapeuta">
+        <label for="search">Buscar Horários:</label>
+        <input 
+            type="text" 
+            id="search" 
+            name="search" 
+            placeholder="Digite o nome do cliente ou terapeuta"
+            value="{{ termo_busca }}">
+        <button type="submit">Buscar</button>
+    </form>
+    
+    <!-- Exibição dos Horários -->
+    {% if horarios %}
+    <table>
+        <thead>
+            <tr>
+                <th>Paciente</th>
+                <th>Dia da Semana</th>
+                <th>Horário</th>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Sala</th>
+                <th>Presença</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for horario in horarios %}
+            <tr>
+                <td>{{ horario[1] }}</td>
+                <td>{{ horario[3] }}</td>
+                <td>{{ horario[4] }}</td>
+                <td>{{ horario[5] }}</td>
+                <td>{{ horario[6] }}</td>
+                <td>{{ horario[7] }}</td>
+                <td>{{ horario[8] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Nenhum horário encontrado.</p>
+    {% endif %}
+
+</body>
+</html>

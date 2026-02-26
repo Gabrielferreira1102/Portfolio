@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Links</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <h1>Painel de Controle</h1>
+        <p>Selecione uma opção para continuar:</p>
+    </header>
+    <main class="container">
+        {% if current_user.role == 'terapeuta'%}
+            <a href="ver_horarios_terapeuta" class="square">Horário</a>
+        {% endif %}
+        <a href="ver_horarios" class="square">Horário</a>
+        <a href="ver_pacientes" class="square">Pacientes</a>
+        {% if current_user.role == 'adm' or current_user.role == 'secretario'%}
+            <a href="ver_funcionarios" class="square">Funcionários</a>
+        {% endif %}
+        {% if current_user.role == 'adm'%}
+            <a href="relatorio" class="square">Relatório</a>
+        {% endif %}
+    </main>
+    <footer class="footer">
+        <p>&copy; 2024 Sistema de Gerenciamento - Todos os direitos reservados</p>
+    </footer>
+</body>
+</html>

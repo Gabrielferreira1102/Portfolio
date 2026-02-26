@@ -1,0 +1,26 @@
+*{
+    margin: 0;
+    padding: 0;
+    }
+ 
+    #menu ul{
+    background-color: #a08ee6;
+    }
+    #menu ul li{
+    display: inline-table;
+    padding: 25px 35px;
+    cursor: pointer;
+    }
+    #menu ul li:hover{
+    background-color: rgb(190, 150, 216);
+    }
+    #menu ul li a{
+    text-decoration: none; 
+    color: rgb(255, 255, 255);
+    }
+    .a{
+        font-size: 20px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    
+   

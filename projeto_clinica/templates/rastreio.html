@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rastreamento do Paciente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='rastreio.css') }}">
+</head>
+<body>
+    <nav id="menu">
+        <ul>
+            <li><a href="{{ url_for('criar_rastreio', id_cliente=id_cliente) }}" class="btn-criar">Criar Rastreio</a></li>
+            <li><a href="{{ url_for('ver_pacientes') }}">Pacientes</a></li>
+            <li><a href="/menu_adm">Menu</a></li>
+        </ul>
+    </nav>
+    
+
+    <div class="container">
+        <h1>Rastreamento do Paciente</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% if rastreios %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Atividade</th>
+                    <th>Tempo</th>
+                    <th>Humor</th>
+                    <th>Autonomia</th>
+                    <th>Observações</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rastreio in rastreios %}
+                <tr>
+                    <td>{{ rastreio[2] }}</td>
+                    <td>{{ rastreio[3] }}</td>
+                    <td>{{ rastreio[4] }}</td>
+                    <td>{{ rastreio[5] }}</td>
+                    <td>{{ rastreio[6] }}</td>
+                    <td>{{ rastreio[7].strftime('%d/%m/%Y') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>Nenhum rastreamento encontrado para este paciente.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Novo Horário</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='criar_horarios.css') }}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav id="menu">
+        <ul>
+            <li><a href="/ver_horarios">Ver Horários</a></li>
+            <li><a href="/menu_adm">Menu</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Criar Novo Horário</h1>
+
+        <!-- Exibir mensagens flash -->
+        
+
+        <!-- Formulário para criar um novo horário -->
+        <form method="POST" action="/criar_horario">
+            <label for="paciente">Paciente:</label>
+            <input type="text" id="paciente" name="paciente" required>
+
+            <label for="terapeuta">Terapeuta:</label>
+            <input type="text" id="terapeuta" name="terapeuta" required>
+
+            <label for="dia_semana">Dia da Semana:</label>
+            <select id="dia_semana" name="dia_semana" required>
+                <option value="Segunda">Segunda</option>
+                <option value="Terça">Terça</option>
+                <option value="Quarta">Quarta</option>
+                <option value="Quinta">Quinta</option>
+                <option value="Sexta">Sexta</option>
+            </select>
+
+            <label for="horario">Horário:</label>
+            <input type="time" id="horario" name="horario" required>
+
+            <label for="data">Data:</label>
+            <input type="date" id="data" name="data" required>
+
+            <label for="descricao">Descrição:</label>
+            <input type="text" id="descricao" name="descricao" required>
+
+            <label for="sala">Sala:</label>
+            <input type="text" id="sala" name="sala" required>
+
+            <label for="presenca">Presença:</label>
+            <input type="checkbox" id="presenca" name="presenca">
+
+            <button type="submit">Salvar</button>
+        </form>
+
+        <!-- Exibição de resultados da busca por cliente -->
+        {% if busca_cliente.resultados %}
+            <h2>Resultados da busca por clientes:</h2>
+            <ul>
+                {% for cliente in busca_cliente.resultados %}
+                    <li>{{ cliente }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- Exibição de resultados da busca por terapeuta -->
+        {% if busca_terapeuta.resultados %}
+            <h2>Resultados da busca por terapeutas:</h2>
+            <ul>
+                {% for terapeuta in busca_terapeuta.resultados %}
+                    <li>{{ terapeuta }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</body>
+</html>
